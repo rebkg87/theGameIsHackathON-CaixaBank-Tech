@@ -4,48 +4,44 @@ import { transactionsStore } from '../stores/transactionStore';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Select, MenuItem, InputLabel, FormControl, Grid, Box } from '@mui/material';
 import { categoryKeywords } from '../constants/categoryKeywords';
 import { allCategories } from '../constants/categories';
+import useTransactions from '../hooks/useTransactions';
+import useSubmitTransaction from '../hooks/useSubmitTransaction';
 
 function TransactionForm({ transactionToEdit, onClose }) {
-    const transactions = useStore(transactionsStore);
-
-    // Local state variables
-    // Instructions:
-    // - Ensure the form fields are correctly initialized when in "edit mode."
+    const editTransactionId = transactionToEdit ? transactionToEdit.id : null
+    const {handleTransactionSubmit} = useSubmitTransaction(editTransactionId, resetForm, onClose)
+    const {addNewTransaction, updateTransactions} = useTransactions()
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const [type, setType] = useState('expense');
     const [category, setCategory] = useState('');
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
-    // Implement the function to assign a category based on description keywords
-    const assignCategory = (desc) => {
-        // Instructions: 
-        // - Loop through `categoryKeywords` to find matching keywords
-        // - If a keyword is found in the description, return the category
-        // - Return 'Other Expenses' if no category is found
+    useEffect(()=>{
+        if (transactionToEdit) return
+        const assignedCategory = assignCategory(description)
+        setCategory(assignedCategory)
+    }, [description, transactionToEdit])
 
+    const assignCategory = (desc) => {
+        for (const [category, keywords] of Object.entries(categoryKeywords)) {
+            if (keywords.some(keyword => desc.toLowerCase().includes(keyword.toLowerCase()))) {
+                return category
+            }
+        }
         return 'Other Expenses';
     };
 
-    // Auto-assign a category if adding a new transaction
     useEffect(() => {
         if (!transactionToEdit) {
-            // Instructions: 
-            // - Call the `assignCategory` function to determine the category based on the description
-            // - Then, update the category state with the result
+            const assignedCategory = assignCategory(description)
+            setCategory(assignedCategory)
         }
-
-        // Instructions: Add the proper dependencies to the useEffect hook
-    }, []);
+    }, [description, transactionToEdit]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Instructions:
-        // - Validate that all fields are filled in.
-        // - If editing, update the transaction in the store.
-        // - If adding a new transaction, create it and save it to the store.
-        // - The transaction type should be either "income" or "expense".
-        // - Ensure the transaction has the following structure: { id, description, amount, type, category, date }
+        handleTransactionSubmit(description, amount, type, category, date)
     };
 
     return (
