@@ -192,7 +192,7 @@ function TransactionList() {
                 - Update the filterCategory and filterType state values when the user makes a selection.
                 - Apply the selected filters to the displayed transactions. */}
             <Box sx={{ display: 'flex', gap: 2, my: 2 }}>
-                <FormControl sx={{ minWidth: 120 }}>
+                <FormControl variant='filled' sx={{ minWidth: 120 }}>
                     <InputLabel id="filter-category-label">Category</InputLabel>
                     <Select
                         labelId="filter-category-label"
@@ -208,7 +208,7 @@ function TransactionList() {
                     </Select>
                 </FormControl>
 
-                <FormControl sx={{ minWidth: 120 }}>
+                <FormControl variant='filled' sx={{ minWidth: 120 }}>
                     <InputLabel id="filter-type-label">Type</InputLabel>
                     <Select
                         labelId="filter-type-label"
@@ -221,7 +221,7 @@ function TransactionList() {
                     </Select>
                 </FormControl>
 
-                <FormControl sx={{ minWidth: 150 }}>
+                <FormControl variant='filled' sx={{ minWidth: 150 }}>
                     <InputLabel id="sort-field-label">Sort By</InputLabel>
                     <Select
                         labelId="sort-field-label"
@@ -264,9 +264,9 @@ function TransactionList() {
                                 <TableCell>{transaction.type}</TableCell>
                                 <TableCell>{transaction.category}</TableCell>
                                 <TableCell>{transaction.date}</TableCell>
-                                <TableCell>
-                                    <Button variant='contained' color="primary" disableElevation onClick={() => handleEdit(transaction)}>Edit</Button>
-                                    <Button variant='contained' color="default" disableElevation onClick={() => handleDelete(transaction.id)}>Delete</Button>
+                                <TableCell sx={{ display: 'flex', gap: 1 }}>
+                                    <Button variant='outlined' color="primary" disableElevation onClick={() => handleEdit(transaction)}>Edit</Button>
+                                    <Button variant='outlined' color="error" disableElevation onClick={() => handleDelete(transaction.id)}>Delete</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
