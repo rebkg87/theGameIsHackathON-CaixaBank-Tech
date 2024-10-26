@@ -7,6 +7,10 @@ function ProtectedRoute({ isAuthenticated }) {
     // - If the user is not authenticated, redirect them to the login page.
     // - If the user is authenticated, render the child components using <Outlet />.
 
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />
+    }
+
     return <Outlet />;
 }
 

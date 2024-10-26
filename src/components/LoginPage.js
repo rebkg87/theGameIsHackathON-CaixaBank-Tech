@@ -9,6 +9,7 @@ import {
     Alert,
     Grid
 } from '@mui/material';
+import AlertBanner from './AlertBanner';
 
 function LoginPage() {
     const [email, setEmail] = useState('');
@@ -29,6 +30,7 @@ function LoginPage() {
         // Instructions:
         // - Check if the email and password fields are filled.
         if (!email || !password) {
+            setError("Por favor, complete todos los campos")
             // - If either is empty, set an appropriate error message.
             return;
         }
@@ -36,8 +38,14 @@ function LoginPage() {
         // Validate credentials
         // Instructions:
         // - Check if the entered credentials match the default credentials or the stored user credentials.
-        // - If valid, call the `login` function and navigate to the homepage.
-        // - If invalid, set an error message.
+        if (email === defaultCredentials.email && password === defaultCredentials.password) {
+            // - If valid, call the `login` function and navigate to the homepage.
+            login({ email })
+            navigate('/')
+            // - If invalid, set an error message.
+        } else {
+            setError('Credenciales incorrectas. Intente nuevamente')
+        }
     };
 
     const handleShowDefaultCredentials = () => {
@@ -84,12 +92,17 @@ function LoginPage() {
             {/* - Use the Alert component to display the error message if one exists. */}
             {/* - Ensure that registration and forgot password options are displayed below the error message if present. */}
 
+            {error && <AlertBanner errorMessage={error}/>}
+
             {showCredentials && (
                 <Alert severity="info" sx={{ mt: 2 }}>
                     <strong>Email:</strong> {defaultCredentials.email}<br />
                     <strong>Password:</strong> {defaultCredentials.password}
                 </Alert>
             )}
+            <Button color="primary" onClick={handleShowDefaultCredentials}>
+                Mostar Credenciales por Defecto
+            </Button>
         </Box>
     );
 }
