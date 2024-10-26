@@ -4,7 +4,7 @@ import { transactionsStore } from '../stores/transactionStore';
 import { userSettingsStore } from '../stores/userSettingsStore';
 import { Alert, Collapse } from '@mui/material';
 
-function AlertBanner() {
+function AlertBanner({errorMessage}) {
     const transactions = useStore(transactionsStore);
     const userSettings = useStore(userSettingsStore);
 
@@ -25,6 +25,12 @@ function AlertBanner() {
 
     return (
         <div>
+            {/* Show error message if provided */}
+            {errorMessage && (
+                <Alert severity="error" sx={{ mb: 2 }}>
+                    {errorMessage}
+                </Alert>
+            )}
             {/* Total limit alert */}
             <Collapse in={overTotalBudget}>
                 <Alert severity="warning" sx={{ mb: 2 }}>
