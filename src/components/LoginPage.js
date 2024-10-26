@@ -30,7 +30,7 @@ function LoginPage() {
         // Instructions:
         // - Check if the email and password fields are filled.
         if (!email || !password) {
-            setError("Por favor, complete todos los campos")
+            setError("Please, complete all fields")
             // - If either is empty, set an appropriate error message.
             return;
         }
@@ -44,7 +44,7 @@ function LoginPage() {
             navigate('/')
             // - If invalid, set an error message.
         } else {
-            setError('Credenciales incorrectas. Intente nuevamente')
+            setError('Wrong Credentials. Try again')
         }
     };
 
@@ -101,7 +101,7 @@ function LoginPage() {
                 </Alert>
             )}
             <Button color="primary" onClick={handleShowDefaultCredentials}>
-                Mostar Credenciales por Defecto
+                Show default credentials
             </Button>
         </Box>
     );
