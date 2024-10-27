@@ -10,7 +10,6 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import { BorderAllRounded } from '@mui/icons-material';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 
@@ -56,8 +55,8 @@ function AnalysisGraph() {
     };
 
     return (
-        <div style={{ width: '100%', height: '400px' }}>
-            <Bar data={data} />
+        <div style={{ height: '400px' }}>
+            <Bar data={data} options={{ responsive: true }} />
         </div>
     );
 }

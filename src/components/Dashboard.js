@@ -123,7 +123,7 @@ function Dashboard() {
                         </Suspense>
                     </Grid>
                 </Grid>
-                <Grid container spacing={4} sx={{ mt: 4 }}>
+                <Grid container spacing={4} sx={{ mt: 4, display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'center', alignContent:'center', gap:2 }}>
                     <Grid item xs={12}>
                         <Suspense fallback={<div>Loading Chart...</div>}>
                             <AnalysisGraph/>
