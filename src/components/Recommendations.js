@@ -5,7 +5,7 @@ import { CircularProgress, Typography, Box } from '@mui/material';
 import useTransactions from '../hooks/useTransactions';
 
 function Recommendations() {
-    const { transactions, totalExpense, expenses } = useTransactions();
+    const { expenses } = useTransactions();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -43,10 +43,13 @@ function Recommendations() {
     if (expenseLastMonth === 0) {
         message = "Great job! You haven't recorded any expenses last month. Keep it up!"
     } else if (expenseThisMonth < expenseLastMonth) {
-        const decreasePercentage = ((expenseLastMonth - expenseThisMonth) / expenseLastMonth) * 100;
-        message = `Congratulations! Your expenses decreased by ${decreasePercentage.toFixed(2)}%.`;
+        const decreasePercentage = ((expenseLastMonth - expenseThisMonth) / expenseLastMonth) * 100
+        message = `Congratulations! Your expenses decreased by ${decreasePercentage.toFixed(2)}%.`
+    } else if (expenseThisMonth > expenseLastMonth) {
+        const increasePercentage = ((expenseThisMonth - expenseLastMonth) / expenseLastMonth) * 100;
+        message = `Your expenses increased by ${increasePercentage.toFixed(2)}%. Consider reviewing your spending.`
     } else {
-        message = "Your spending hasn't changed compared to last month. Keep monitoring your expenses!";
+        message = "Your spending hasn't changed compared to last month. Keep monitoring your expenses!"
     }
 
     return (
