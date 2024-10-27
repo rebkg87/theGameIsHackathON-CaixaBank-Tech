@@ -103,12 +103,15 @@ function Dashboard() {
                             <Typography variant="h6" gutterBottom>
                                 Balance
                             </Typography>
-                            <Typography variant="h5" data-testid="balance" sx={{ mb: 2 }} >
+                            <Typography variant="h5" data-testid="balance" sx={{  }} >
                                 {balance} €
                             </Typography>
-                            <Box sx={{ display: 'flex', flexDirection:'column', gap: 2 }}>
+                        </Paper>
+                    </Grid>
+                </Grid>
+                <Box sx={{ display: 'flex', flexDirection:'row', gap: 2, mt: 5, flexWrap:'wrap', alignContent:'center', justifyContent:'center' }}>
                                 {balance < 0 && (
-                                    <Alert variant='filled' severity="error">
+                                    <Alert variant='filled' severity="error" sx={{ mb: 2, paddingRight: 2}}>
                                         Warning: Negative Balance
                                     </Alert>
                                 )}
@@ -116,8 +119,35 @@ function Dashboard() {
                                     <BudgetAlert />
                                 )}
                             </Box>
-
-                        </Paper>
+                <Grid container spacing={4} sx={{ mt: 4 }}>
+                    <Grid item xs={12} md={6}>
+                        <Suspense fallback={<div>Loading Statistics...</div>}>
+                            <Statistics transactions={transactions} />
+                        </Suspense>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Suspense fallback={<div>Loading Recommendations...</div>}>
+                            <Recommendations transactions={transactions} />
+                        </Suspense>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={4} sx={{ mt: 4 }}>
+                    <Grid item xs={12}>
+                        <Suspense fallback={<div>Loading Chart...</div>}>
+                            <AnalysisGraph transactions={transactions} />
+                        </Suspense>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Suspense fallback={<div>Loading Chart...</div>}>
+                            <BalanceOverTime transactions={transactions} />
+                        </Suspense>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={4} sx={{ mt: 4 }}>
+                    <Grid item xs={12}>
+                        <Suspense fallback={<div>Loading Recent Transactions...</div>}>
+                            <RecentTransactions transactions={transactions} />
+                        </Suspense>
                     </Grid>
                 </Grid>
             </Box>
