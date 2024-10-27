@@ -2,7 +2,7 @@ import React from 'react';
 import { useStore } from '@nanostores/react';
 import { transactionsStore } from '../stores/transactionStore';
 import { userSettingsStore } from '../stores/userSettingsStore';
-import { Alert, Collapse } from '@mui/material';
+import { Alert, Box, Collapse } from '@mui/material';
 
 function AlertBanner({ errorMessage }) {
     const transactions = useStore(transactionsStore);
@@ -26,7 +26,7 @@ function AlertBanner({ errorMessage }) {
     }); 
 
     return (
-        <div>
+        <Box sx={{display:'flex', flexDirection:'row', flexWrap:'wrap', gap: 2}}>
             {errorMessage && (
                 <Alert variant='filled' severity="error" sx={{ mb: 2 }}>
                     {errorMessage}
@@ -43,7 +43,7 @@ function AlertBanner({ errorMessage }) {
                     You have exceeded your budget limit for {category} ({categoryLimits[category]} €)!
                 </Alert>
             ))}
-        </div>
+        </Box>
     );
 }
 

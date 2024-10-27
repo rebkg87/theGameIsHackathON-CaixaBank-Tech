@@ -4,6 +4,14 @@ import { transactionsStore, addTransaction, deleteTransaction as removeTransacti
 
 const useTransactions = () => {
     const transactions = useStore(transactionsStore)
+
+    const expenses = transactions.filter(transaction => transaction.type === 'expense')
+
+    const income = transactions.filter(transaction => transaction.type === 'income')
+
+    const totalExpense = expenses.reduce((sum, transaction) => sum + transaction.amount, 0);
+    const totalIncome = income.reduce((sum, transaction) => sum + transaction.amount, 0);
+
     const addNewTransaction = useCallback((transaction)=> {
         addTransaction(transaction)
     },[])
@@ -16,7 +24,7 @@ const useTransactions = () => {
     },[])
 
         return {
-            transactions, addNewTransaction, deleteTransaction, updateTransactions
+            transactions, expenses, income, totalExpense, totalIncome, addNewTransaction, deleteTransaction, updateTransactions
         }
 }
 

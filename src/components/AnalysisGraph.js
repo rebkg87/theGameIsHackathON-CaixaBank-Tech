@@ -1,43 +1,63 @@
 import React from 'react';
-import { useStore } from '@nanostores/react';
-import { transactionsStore } from '../stores/transactionStore';
+import useTransactions from '../hooks/useTransactions';
+import { Bar } from 'react-chartjs-2';
 import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
     Tooltip,
     Legend,
-    ResponsiveContainer,
-} from 'recharts';
+} from 'chart.js';
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
 
 function AnalysisGraph() {
-    const transactions = useStore(transactionsStore);
+    const {transactions} = useTransactions()
 
-    // Unique categories
-    // Instructions:
-    // - Extract unique categories from the transactions
-    // - This should gather all the categories used in the 'category' field of the transactions
-    const categories = []; // Add logic to extract unique categories from transactions
+    const categories = [...new Set(transactions.map(transaction => transaction.category))];
 
-    // Chart data
-    // Instructions:
-    // - Aggregate income and expense data for each category
-    // - For each category, calculate the total 'income' and 'expense'
-    // - The data array should return an object like this for each category: { category, Income, Expense }
-    const data = []; // Add logic to calculate income and expense for each category
+    const incomeData = categories.map(category => {
+        return transactions
+            .filter(transaction => transaction.category === category && transaction.type === 'income')
+            .reduce((sum, transaction) => sum + transaction.amount, 0);
+    });
+
+    const expenseData = categories.map(category => {
+        return transactions
+            .filter(transaction => transaction.category === category && transaction.type === 'expense')
+            .reduce((sum, transaction) => sum + transaction.amount, 0);
+    });
+
+    const data = {
+        labels: categories,
+        datasets: [
+            {
+                label: 'Income',
+                data: incomeData,
+                backgroundColor: '#007EAE',
+                stack: 'Stack 0',
+                borderColor: 'rgba(255, 255, 255, 0.8)', 
+                borderWidth: 1,
+                borderRadius: 20,
+            },
+            {
+                label: 'Expense',
+                data: expenseData,
+                backgroundColor: '#ffa000',
+                stack: 'Stack 0',
+                borderColor: 'rgba(255, 255, 255, 0.8)', 
+                borderWidth: 1,
+                borderRadius: 20,
+            },
+        ],
+    };
 
     return (
-        <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={data}>
-                <XAxis dataKey="category" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="Income" stackId="a" fill="#82ca9d" />
-                <Bar dataKey="Expense" stackId="a" fill="#8884d8" />
-            </BarChart>
-        </ResponsiveContainer>
+        <div style={{ height: '400px' }}>
+            <Bar data={data} options={{ responsive: true }} />
+        </div>
     );
 }
 

@@ -2,58 +2,59 @@ import React, { useEffect, useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { transactionsStore } from '../stores/transactionStore';
 import { CircularProgress, Typography, Box } from '@mui/material';
+import useTransactions from '../hooks/useTransactions';
 
 function Recommendations() {
-    const transactions = useStore(transactionsStore); 
-    const [loading, setLoading] = useState(true); 
-    const [error, setError] = useState(null); 
+    const { expenses } = useTransactions();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Simulate data loading and handle possible errors
-        // Instructions:
-        // - Set loading to true before fetching the data.
-        // - After a delay (simulated with setTimeout), set loading to false.
-        // - You may simulate an error by setting the error state.
         setLoading(true);
         setTimeout(() => {
-            // Simulate error in case of failure (optional)
+            // setError("Failed to load recommendations.") //Simular error
             setLoading(false);
         }, 1000);
+
     }, []);
 
     if (loading) {
-        // Show a loading indicator while data is being fetched
         return <CircularProgress />;
     }
 
     if (error) {
-        // Display an error message if something goes wrong
         return <Typography color="error">{error}</Typography>;
     }
 
-    // Implement logic to compare expenses between months
-    // Instructions:
-    // - Use the transactions to calculate expenses for the current and previous months.
-    // - Filter transactions by type ('expense') and by month/year.
-    // - Compare the total expenses of this month with last month.
+    const now = new Date();
+    const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+    const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+    const startOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
 
-    const expenses = []; // Implement logic to filter and extract expenses
-    const expenseThisMonth = 0; // Calculate total expenses for the current month
-    const expenseLastMonth = 0; // Calculate total expenses for the last month
+    const expenseThisMonth = expenses
+        .filter(transaction => transaction.date >= startOfCurrentMonth && transaction.date < startOfNextMonth)
+        .reduce((sum, transaction) => sum + transaction.amount, 0)
+    const expenseLastMonth = expenses
+        .filter(transaction => transaction.date >= startOfLastMonth && transaction.date < startOfCurrentMonth)
+        .reduce((sum, transaction) => sum + transaction.amount, 0)
 
-    // Generate a message based on the comparison between months
-    // Instructions:
-    // - If there are no expenses for last month, display a message encouraging the user to keep recording.
-    // - If expenses have increased, calculate the percentage increase and suggest reviewing expenses.
-    // - If expenses have decreased, congratulate the user and show the percentage decrease.
-    // - If expenses are the same, notify the user that their spending hasn't changed.
-
-    const message = ''; // Implement logic to generate the appropriate message based on the comparison
+    let message = ''
+    
+    if (expenseLastMonth === 0) {
+        message = "Great job! You haven't recorded any expenses last month. Keep it up!"
+    } else if (expenseThisMonth < expenseLastMonth) {
+        const decreasePercentage = ((expenseLastMonth - expenseThisMonth) / expenseLastMonth) * 100
+        message = `Congratulations! Your expenses decreased by ${decreasePercentage.toFixed(2)}%.`
+    } else if (expenseThisMonth > expenseLastMonth) {
+        const increasePercentage = ((expenseThisMonth - expenseLastMonth) / expenseLastMonth) * 100;
+        message = `Your expenses increased by ${increasePercentage.toFixed(2)}%. Consider reviewing your spending.`
+    } else {
+        message = "Your spending hasn't changed compared to last month. Keep monitoring your expenses!"
+    }
 
     return (
         <Box sx={{ mt: 4 }}>
-            <Typography variant="h5">Recommendations</Typography>
-            {/* Display the recommendation message according to the change in expenditure */}
+            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#007EAE' }}>Recommendations</Typography>
             <Typography>{message}</Typography>
         </Box>
     );
