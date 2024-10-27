@@ -56,7 +56,7 @@ function Dashboard() {
                     <Grid item xs={12} md={4}>
                         <Paper sx={{
                             padding: 2, boxShadow: 3, borderRadius: 2, transition: 'background-color 0.3s', '&:hover': {
-                                backgroundColor: '#00e676', '& .MuiTypography-root': {
+                                backgroundColor: '#43a047', '& .MuiTypography-root': {
                                     color: 'white', fontWeight: 'bold'
                                 },
                             }
@@ -71,7 +71,7 @@ function Dashboard() {
                     <Grid item xs={12} md={4}>
                         <Paper sx={{
                             padding: 2, boxShadow: 3, borderRadius: 2, transition: 'background-color 0.3s', '&:hover': {
-                                backgroundColor: '#ff1744', '& .MuiTypography-root': {
+                                backgroundColor: '#b71c1c', '& .MuiTypography-root': {
                                     color: 'white', fontWeight: 'bold'
                                 },
                             }

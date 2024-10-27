@@ -5,12 +5,12 @@ import { Paper, Typography } from '@mui/material';
 import useTransactions from '../hooks/useTransactions';
 
 function Statistics() {
-    const {expenses, totalExpense} = useTransactions()
+    const { expenses, totalExpense } = useTransactions()
 
     const uniqueDates = [...new Set(expenses.map(transaction => new Date(transaction.date).toLocaleDateString))]
     const averageDailyExpense = uniqueDates.length > 0 ? (totalExpense / uniqueDates.length) : 0
-    const categoryExpenses = expenses.reduce ((acc, transaction) => {
-        acc [transaction.category] = (acc [transaction.category] || 0) + transaction.amount
+    const categoryExpenses = expenses.reduce((acc, transaction) => {
+        acc[transaction.category] = (acc[transaction.category] || 0) + transaction.amount
         return acc
     }, {})
     const maxCategory = Object.keys(categoryExpenses).reduce((max, category) => {
@@ -18,8 +18,14 @@ function Statistics() {
     }, null)
 
     return (
-        <Paper sx={{ padding: 2, mt: 2 }}>
-            <Typography variant="h6">Key Statistics</Typography>
+        <Paper sx={{
+            padding: 2, mt: 2, border:'-moz-initial', borderStyle:'solid', borderColor:'#007EAE', backgroundColor: '#D9ECF3', transition: 'background-color 0.3s', '&:hover': {
+                backgroundColor: 'primary.light', '& .MuiTypography-root': {
+                    color: 'white', fontWeight: 'bold'
+                },
+            }
+        }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#007EAE' }}>Key Statistics</Typography>
             <Typography>
                 Average Daily Expense: {averageDailyExpense.toFixed(2)} €
             </Typography>
