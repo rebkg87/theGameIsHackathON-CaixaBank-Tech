@@ -95,7 +95,7 @@ function Dashboard() {
                             <Typography variant="h6" gutterBottom>
                                 Balance
                             </Typography>
-                            <Typography variant="h5" data-testid="balance" sx={{  }} >
+                            <Typography variant="h5" data-testid="balance" sx={{ color: balance < 0 ? 'red' : 'inherit' }} >
                                 {balance} €
                             </Typography>
                         </Paper>
