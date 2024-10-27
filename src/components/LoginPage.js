@@ -26,30 +26,20 @@ function LoginPage() {
     const handleLogin = (e) => {
         e.preventDefault();
 
-        // Validate that fields are not empty
-        // Instructions:
-        // - Check if the email and password fields are filled.
         if (!email || !password) {
             setError("Please, complete all fields")
-            // - If either is empty, set an appropriate error message.
             return;
         }
 
-        // Validate credentials
-        // Instructions:
-        // - Check if the entered credentials match the default credentials or the stored user credentials.
         if (email === defaultCredentials.email && password === defaultCredentials.password) {
-            // - If valid, call the `login` function and navigate to the homepage.
             login({ email })
             navigate('/')
-            // - If invalid, set an error message.
         } else {
             setError('Wrong Credentials. Try again')
         }
     };
 
     const handleShowDefaultCredentials = () => {
-        // Show default credentials in case the user requests it
         setEmail(defaultCredentials.email);
         setPassword(defaultCredentials.password);
         setShowCredentials(true);
@@ -88,9 +78,6 @@ function LoginPage() {
                 </Button>
             </form>
 
-            {/* Show error message when applicable */}
-            {/* - Use the Alert component to display the error message if one exists. */}
-            {/* - Ensure that registration and forgot password options are displayed below the error message if present. */}
 
             {error && <AlertBanner errorMessage={error}/>}
 
