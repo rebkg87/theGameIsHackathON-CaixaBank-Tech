@@ -20,6 +20,7 @@ import {
     TablePagination
 } from '@mui/material';
 import useSubmitTransaction from '../hooks/useSubmitTransaction';
+import BudgetAlert from './BudgetAlert';
 
 function TransactionList() {
     const { transactions, deleteTransaction } = useTransactions();
@@ -105,6 +106,8 @@ function TransactionList() {
             <Typography variant="h4" gutterBottom>
                 Transaction List
             </Typography>
+
+            <BudgetAlert/>
 
             <form onSubmit={handleSubmit}>
                 <Box sx={{ display: 'flex', gap: 2, my: 2 }}>

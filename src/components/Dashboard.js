@@ -1,11 +1,12 @@
 import React, { Profiler, Suspense } from 'react';
 import { useStore } from '@nanostores/react';
-import { Box, Typography, Grid, Paper } from '@mui/material';
+import { Box, Typography, Grid, Paper, Alert } from '@mui/material';
 import ExportButton from './ExportButton';
 import DownloadProfilerData from './DownloadProfilerData';
 import { onRenderCallback } from '../utils/onRenderCallback';
 import { transactionsStore } from '../stores/transactionStore';
-import useTransactions from '../hooks/useTransactions';
+import { userSettingsStore } from '../stores/userSettingsStore';
+import BudgetAlert from './BudgetAlert';
 
 const AnalysisGraph = React.lazy(() => import('./AnalysisGraph'));
 const BalanceOverTime = React.lazy(() => import('./BalanceOverTime'));
@@ -15,6 +16,7 @@ const RecentTransactions = React.lazy(() => import('./RecentTransactions'));
 
 function Dashboard() {
     const transactions = useStore(transactionsStore)
+    const userSettings = useStore(userSettingsStore)
 
     const headers = ['description', 'amount', 'type', 'category', 'date']
 
@@ -35,6 +37,9 @@ function Dashboard() {
         .reduce((sum, transaction) => sum + transaction.amount, 0)
 
     const balance = totalIncome - totalExpense
+
+    const totalBudgetLimit = userSettings.totalBudgetLimit
+
 
     return (
         <Profiler id="Dashboard" onRender={onRenderCallback}>
@@ -93,12 +98,25 @@ function Dashboard() {
                                     color: 'white', fontWeight: 'bold'
                                 },
                             }
-                        }}>
+                        }}
+                        >
                             <Typography variant="h6" gutterBottom>
                                 Balance
                             </Typography>
-                            <Typography variant="h5" data-testid="balance">
-                                {balance} €                            </Typography>
+                            <Typography variant="h5" data-testid="balance" sx={{ mb: 2 }} >
+                                {balance} €
+                            </Typography>
+                            <Box sx={{ display: 'flex', flexDirection:'column', gap: 2 }}>
+                                {balance < 0 && (
+                                    <Alert variant='filled' severity="error">
+                                        Warning: Negative Balance
+                                    </Alert>
+                                )}
+                                {totalExpense > totalBudgetLimit && (
+                                    <BudgetAlert />
+                                )}
+                            </Box>
+
                         </Paper>
                     </Grid>
                 </Grid>
