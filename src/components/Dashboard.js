@@ -4,9 +4,9 @@ import { Box, Typography, Grid, Paper, Alert } from '@mui/material';
 import ExportButton from './ExportButton';
 import DownloadProfilerData from './DownloadProfilerData';
 import { onRenderCallback } from '../utils/onRenderCallback';
-import { transactionsStore } from '../stores/transactionStore';
 import { userSettingsStore } from '../stores/userSettingsStore';
 import BudgetAlert from './BudgetAlert';
+import useTransactions from '../hooks/useTransactions';
 
 const AnalysisGraph = React.lazy(() => import('./AnalysisGraph'));
 const BalanceOverTime = React.lazy(() => import('./BalanceOverTime'));
@@ -15,26 +15,18 @@ const Recommendations = React.lazy(() => import('./Recommendations'));
 const RecentTransactions = React.lazy(() => import('./RecentTransactions'));
 
 function Dashboard() {
-    const transactions = useStore(transactionsStore)
+    const {expenses, income, totalExpense, totalIncome} = useTransactions()
     const userSettings = useStore(userSettingsStore)
 
     const headers = ['description', 'amount', 'type', 'category', 'date']
 
-    const csvData = transactions.map(transaction => ({
+    const csvData = expenses.concat(income).map(transaction => ({
         description: transaction.description,
         amount: transaction.amount,
         type: transaction.type,
         category: transaction.category,
         date: new Date(transaction.date).toLocaleDateString()
     }))
-
-    const totalIncome = transactions
-        .filter((transaction) => transaction.type === 'income')
-        .reduce((sum, transaction) => sum + transaction.amount, 0)
-
-    const totalExpense = transactions
-        .filter((transaction) => transaction.type === 'expense')
-        .reduce((sum, transaction) => sum + transaction.amount, 0)
 
     const balance = totalIncome - totalExpense
 
@@ -122,31 +114,31 @@ function Dashboard() {
                 <Grid container spacing={4} sx={{ mt: 4 }}>
                     <Grid item xs={12} md={6}>
                         <Suspense fallback={<div>Loading Statistics...</div>}>
-                            <Statistics transactions={transactions} />
+                            <Statistics/>
                         </Suspense>
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Suspense fallback={<div>Loading Recommendations...</div>}>
-                            <Recommendations transactions={transactions} />
+                            <Recommendations/>
                         </Suspense>
                     </Grid>
                 </Grid>
                 <Grid container spacing={4} sx={{ mt: 4 }}>
                     <Grid item xs={12}>
                         <Suspense fallback={<div>Loading Chart...</div>}>
-                            <AnalysisGraph transactions={transactions} />
+                            <AnalysisGraph/>
                         </Suspense>
                     </Grid>
                     <Grid item xs={12}>
                         <Suspense fallback={<div>Loading Chart...</div>}>
-                            <BalanceOverTime transactions={transactions} />
+                            <BalanceOverTime/>
                         </Suspense>
                     </Grid>
                 </Grid>
                 <Grid container spacing={4} sx={{ mt: 4 }}>
                     <Grid item xs={12}>
                         <Suspense fallback={<div>Loading Recent Transactions...</div>}>
-                            <RecentTransactions transactions={transactions} />
+                            <RecentTransactions/>
                         </Suspense>
                     </Grid>
                 </Grid>

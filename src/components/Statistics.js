@@ -2,34 +2,20 @@ import React from 'react';
 import { useStore } from '@nanostores/react';
 import { transactionsStore } from '../stores/transactionStore';
 import { Paper, Typography } from '@mui/material';
+import useTransactions from '../hooks/useTransactions';
 
 function Statistics() {
-    const transactions = useStore(transactionsStore);
+    const {expenses, totalExpense} = useTransactions()
 
-    // Filter transactions by 'expense' type
-    // Instructions:
-    // - Implement logic to filter the transactions array to only include expenses.
-    const expenses = []; // Replace with logic to filter expenses
-
-    // Calculate total expense
-    // Instructions:
-    // - Sum the amounts of all expense transactions.
-    const totalExpense = 0; // Replace with logic to calculate total expense
-
-    // Get unique dates from expenses
-    // Instructions:
-    // - Extract the unique dates from the expense transactions.
-    // - Calculate the average daily expense.
-    const uniqueDates = []; // Replace with logic to get unique dates
-    const averageDailyExpense = 0; // Replace with logic to calculate average daily expense
-
-    // Find the category with the highest spending
-    // Instructions:
-    // - Use the categoryExpenses object to accumulate the total amount spent in each category.
-    // - Implement logic to determine which category has the highest total expense.
-    // - Ensure that `maxCategory` contains the category with the highest spending.
-    const categoryExpenses = {}; // Replace with logic to calculate expenses per category
-    let maxCategory = null;
+    const uniqueDates = [...new Set(expenses.map(transaction => new Date(transaction.date).toLocaleDateString))]
+    const averageDailyExpense = uniqueDates.length > 0 ? (totalExpense / uniqueDates.length) : 0
+    const categoryExpenses = expenses.reduce ((acc, transaction) => {
+        acc [transaction.category] = (acc [transaction.category] || 0) + transaction.amount
+        return acc
+    }, {})
+    const maxCategory = Object.keys(categoryExpenses).reduce((max, category) => {
+        return categoryExpenses[category] > (categoryExpenses[max] || 0) ? category : max
+    }, null)
 
     return (
         <Paper sx={{ padding: 2, mt: 2 }}>
