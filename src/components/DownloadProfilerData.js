@@ -4,23 +4,30 @@ import { Download as DownloadIcon } from '@mui/icons-material';
 import { profilerData } from '../utils/profilerData';
 
 function DownloadProfilerData() {
-    // Handle download functionality
     const handleDownload = () => {
         if (profilerData.length === 0) {
-            // - First, check if there is any profiler data available.
-            // - If there is no data, alert the user that there is nothing to download.
+            alert("No profile data available to download.");
             return;
         }
 
-        // - If data is available, convert the data to a JSON format.
-        // - Create a Blob from the JSON string and generate a URL for the Blob.
-        // - Create a temporary link element to trigger the download.
+        const jsonData = JSON.stringify(profilerData, null, 2)
+
+        const blob = new Blob([jsonData], { type: 'application/json' })
+
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url;
+        a.download = 'profilerData.json'
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
     };
 
     return (
         <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             startIcon={<DownloadIcon />}
             onClick={handleDownload}
         >

@@ -6,7 +6,6 @@ import DownloadProfilerData from './DownloadProfilerData';
 import { onRenderCallback } from '../utils/onRenderCallback';
 import { transactionsStore } from '../stores/transactionStore';
 import useTransactions from '../hooks/useTransactions';
-import BudgetAlert from './BudgetAlert';
 
 const AnalysisGraph = React.lazy(() => import('./AnalysisGraph'));
 const BalanceOverTime = React.lazy(() => import('./BalanceOverTime'));
@@ -15,7 +14,17 @@ const Recommendations = React.lazy(() => import('./Recommendations'));
 const RecentTransactions = React.lazy(() => import('./RecentTransactions'));
 
 function Dashboard() {
-    const { transactions } = useTransactions()
+    const transactions = useStore(transactionsStore)
+
+    const headers = ['description', 'amount', 'type', 'category', 'date']
+
+    const csvData = transactions.map(transaction => ({
+        description: transaction.description,
+        amount: transaction.amount,
+        type: transaction.type,
+        category: transaction.category,
+        date: new Date(transaction.date).toLocaleDateString()
+    }))
 
     const totalIncome = transactions
         .filter((transaction) => transaction.type === 'income')
@@ -30,21 +39,31 @@ function Dashboard() {
     return (
         <Profiler id="Dashboard" onRender={onRenderCallback}>
             <Box sx={{ p: 4 }}>
-                <Typography variant="h3" gutterBottom>
-                    Dashboard
-                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center' }}>
+                    <Typography variant="h3" gutterBottom sx={{ fontWeight: '600', color: 'primary' }}>
+                        Dashboard
+                    </Typography>
 
-                {/* Action Buttons Section */}
-                {/* Instructions:
-                    - Add a section with ExportButton and DownloadProfilerData components.
-                    - The ExportButton should export the transaction data as a CSV file.
-                    - The DownloadProfilerData button should export profiler data in JSON format.
-                */}
+                    <Box sx={{ mb: 3, display: 'flex', gap: 2 }}>
+                        <ExportButton
+                            data={csvData}
+                            filename="transactions.csv"
+                            headers={headers}
+                            label="Export Transactions"
+                        />
+                        <DownloadProfilerData />
+                    </Box>
+                </Box>
 
-                {/* Totals Section */}
                 <Grid container spacing={4} sx={{ mt: 4 }}>
                     <Grid item xs={12} md={4}>
-                        <Paper sx={{ padding: 2, boxShadow: 3, borderRadius: 2 }}>
+                        <Paper sx={{
+                            padding: 2, boxShadow: 3, borderRadius: 2, transition: 'background-color 0.3s', '&:hover': {
+                                backgroundColor: '#00e676', '& .MuiTypography-root': {
+                                    color: 'white', fontWeight: 'bold'
+                                },
+                            }
+                        }}>
                             <Typography variant="h6" gutterBottom>
                                 Total Income
                             </Typography>
@@ -53,21 +72,33 @@ function Dashboard() {
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Paper sx={{ padding: 2, boxShadow: 3, borderRadius: 2 }}>
+                        <Paper sx={{
+                            padding: 2, boxShadow: 3, borderRadius: 2, transition: 'background-color 0.3s', '&:hover': {
+                                backgroundColor: '#ff1744', '& .MuiTypography-root': {
+                                    color: 'white', fontWeight: 'bold'
+                                },
+                            }
+                        }}>
                             <Typography variant="h6" gutterBottom>
                                 Total Expenses
                             </Typography>
                             <Typography variant="h5" data-testid="total-expenses">
-                            {totalExpense} €                            </Typography>
+                                {totalExpense} €                            </Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Paper sx={{ padding: 2, boxShadow: 3, borderRadius: 2 }}>
+                        <Paper sx={{
+                            padding: 2, boxShadow: 3, borderRadius: 2, transition: 'background-color 0.3s', '&:hover': {
+                                backgroundColor: 'primary.light', '& .MuiTypography-root': {
+                                    color: 'white', fontWeight: 'bold'
+                                },
+                            }
+                        }}>
                             <Typography variant="h6" gutterBottom>
                                 Balance
                             </Typography>
                             <Typography variant="h5" data-testid="balance">
-                            {balance} €                            </Typography>
+                                {balance} €                            </Typography>
                         </Paper>
                     </Grid>
                 </Grid>
