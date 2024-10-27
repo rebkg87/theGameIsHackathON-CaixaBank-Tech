@@ -27,14 +27,12 @@ const BudgetAlert = () => {
 
     return (
         budgetAlert.isVisible && (
-            <Box sx={{display: 'flex', flexDirection:'row-reverse', flexWrap:'wrap'}}>
-                <AlertBanner
+            <AlertBanner
                     errorMessage={budgetAlert.message}
                     onClose={resetBudgetAlert}
                     severity="warning"
                     notificationCount={budgetAlert.notificationCount}
                 />
-            </Box>
         )
     );
 };
