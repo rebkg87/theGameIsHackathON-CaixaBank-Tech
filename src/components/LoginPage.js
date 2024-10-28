@@ -46,7 +46,7 @@ function LoginPage() {
     };
 
     return (
-        <Box sx={{ maxWidth: 400, mx: 'auto', mt: 8, p: 2, border: '1px solid #ddd', borderRadius: 2 }}>
+        <Box sx={{ maxWidth: 400, mx: 'auto', mt: 8, p: 2, border: '1px solid #ddd', borderRadius: 2, p:8 }}>
             <Typography variant="h4" gutterBottom>
                 Login
             </Typography>
@@ -58,6 +58,19 @@ function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     fullWidth
                     margin="normal"
+                    sx={{
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#ccc',
+                            },
+                            '&:hover fieldset': {
+                                borderColor: '#007EAE',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#007EAE',
+                            },
+                        },
+                    }}
                 />
                 <TextField
                     label="Password"
@@ -66,6 +79,19 @@ function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     fullWidth
                     margin="normal"
+                    sx={{
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#ccc',
+                            },
+                            '&:hover fieldset': {
+                                borderColor: '#007EAE',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#007EAE',
+                            },
+                        },
+                    }}
                 />
                 <Button
                     type="submit"
@@ -87,7 +113,7 @@ function LoginPage() {
                     <strong>Password:</strong> {defaultCredentials.password}
                 </Alert>
             )}
-            <Button color="primary" onClick={handleShowDefaultCredentials}>
+            <Button color="primary" onClick={handleShowDefaultCredentials} sx={{mt:2}}>
                 Show default credentials
             </Button>
         </Box>

@@ -43,7 +43,7 @@ function RegisterPage() {
     };
 
     return (
-        <Box sx={{ maxWidth: 400, mx: 'auto', mt: 8, p: 2, border: '1px solid #ddd', borderRadius: 2 }}>
+        <Box sx={{ maxWidth: 400, mx: 'auto', mt: 8, p: 2, border: '1px solid #ddd', borderRadius: 2, p:8 }}>
             <Typography variant="h4" gutterBottom>
                 Register
             </Typography>
@@ -56,6 +56,19 @@ function RegisterPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     fullWidth
                     margin="normal"
+                    sx={{
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#ccc',
+                            },
+                            '&:hover fieldset': {
+                                borderColor: '#007EAE',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#007EAE',
+                            },
+                        },
+                    }}
                 />
 
                 <TextField
@@ -66,6 +79,19 @@ function RegisterPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     fullWidth
                     margin="normal"
+                    sx={{
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#ccc',
+                            },
+                            '&:hover fieldset': {
+                                borderColor: '#007EAE',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#007EAE',
+                            },
+                        },
+                    }}
                 />
 
                 <TextField
@@ -76,6 +102,19 @@ function RegisterPage() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     fullWidth
                     margin="normal"
+                    sx={{
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#ccc',
+                            },
+                            '&:hover fieldset': {
+                                borderColor: '#007EAE',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#007EAE',
+                            },
+                        },
+                    }}
                 />
 
                 <Button
