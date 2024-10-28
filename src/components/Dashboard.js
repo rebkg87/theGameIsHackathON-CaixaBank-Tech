@@ -123,19 +123,13 @@ function Dashboard() {
                         </Suspense>
                     </Grid>
                 </Grid>
-                <Grid container spacing={4} sx={{ mt: 4, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center', gap: 2 }}>
+                <Grid container spacing={4} sx={{ mt: 4, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center', gap: 10 }}>
                     <Grid item xs={12}>
-                        <Typography variant="h5" gutterBottom sx={{ fontWeight: '600', textAlign: 'center' }}>
-                            Income and Expenses Breakdown by Category
-                        </Typography>
                         <Suspense fallback={<div>Loading Chart...</div>}>
                             <AnalysisGraph />
                         </Suspense>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h5" gutterBottom sx={{ fontWeight: '600', textAlign: 'center' }}>
-                            Your Balance Over Time
-                        </Typography>
                         <Suspense fallback={<div>Loading Chart...</div>}>
                             <BalanceOverTime />
                         </Suspense>
