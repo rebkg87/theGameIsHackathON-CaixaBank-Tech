@@ -17,11 +17,13 @@ import {
     Box,
     Typography,
     TextField,
-    TablePagination
+    TablePagination,
+    Alert
 } from '@mui/material';
 import useSubmitTransaction from '../hooks/useSubmitTransaction';
 import BudgetAlert from './BudgetAlert';
 import { useStore } from '@nanostores/react';
+import { authStore } from '../stores/authStore';
 
 function TransactionList() {
     const { isAuthenticated, user } = useStore(authStore);

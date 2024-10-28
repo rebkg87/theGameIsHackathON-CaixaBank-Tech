@@ -32,8 +32,7 @@ function LoginPage() {
             (storedUser && storedUser.email === email && storedUser.password === password) ||
             (email === defaultCredentials.email && password === defaultCredentials.password)
         ) {
-            // Inicia sesión usando el authStore
-            const userData = { email }; // Guarda solo el email en el authStore
+            const userData = { email }; 
             login(userData);
             setSuccess(true);
             setError('');

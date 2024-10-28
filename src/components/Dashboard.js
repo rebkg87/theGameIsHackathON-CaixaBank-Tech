@@ -8,6 +8,7 @@ import { userSettingsStore } from '../stores/userSettingsStore';
 import BudgetAlert from './BudgetAlert';
 import useTransactions from '../hooks/useTransactions';
 import { useNavigate } from 'react-router-dom';
+import { authStore } from '../stores/authStore';
 
 const AnalysisGraph = React.lazy(() => import('./AnalysisGraph'));
 const BalanceOverTime = React.lazy(() => import('./BalanceOverTime'));
