@@ -7,6 +7,8 @@ import { onRenderCallback } from '../utils/onRenderCallback';
 import { userSettingsStore } from '../stores/userSettingsStore';
 import BudgetAlert from './BudgetAlert';
 import useTransactions from '../hooks/useTransactions';
+import { useNavigate } from 'react-router-dom';
+import { authStore } from '../stores/authStore';
 
 const AnalysisGraph = React.lazy(() => import('./AnalysisGraph'));
 const BalanceOverTime = React.lazy(() => import('./BalanceOverTime'));
@@ -17,6 +19,13 @@ const RecentTransactions = React.lazy(() => import('./RecentTransactions'));
 function Dashboard() {
     const { expenses, income, totalExpense, totalIncome } = useTransactions()
     const userSettings = useStore(userSettingsStore)
+    const { isAuthenticated } = useStore(authStore)
+    const navigate = useNavigate()
+
+    if (!isAuthenticated) {
+        navigate('/login')
+        return null
+    }
 
     const headers = ['description', 'amount', 'type', 'category', 'date']
 

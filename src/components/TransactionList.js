@@ -17,12 +17,16 @@ import {
     Box,
     Typography,
     TextField,
-    TablePagination
+    TablePagination,
+    Alert
 } from '@mui/material';
 import useSubmitTransaction from '../hooks/useSubmitTransaction';
 import BudgetAlert from './BudgetAlert';
+import { useStore } from '@nanostores/react';
+import { authStore } from '../stores/authStore';
 
 function TransactionList() {
+    const { isAuthenticated, user } = useStore(authStore);
     const { transactions, deleteTransaction } = useTransactions();
     const [filterCategory, setFilterCategory] = useState('');
     const [filterType, setFilterType] = useState('');
@@ -101,6 +105,9 @@ function TransactionList() {
 
     const categoriesToShow = type === 'expense' ? expenseCategories : incomeCategories;
 
+    if (!isAuthenticated) {
+        return <Alert severity="warning">You must to log in to see the transactions</Alert>;
+    }
     return (
         <Box sx={{ mt: 4 }}>
             <Typography variant="h4" gutterBottom>

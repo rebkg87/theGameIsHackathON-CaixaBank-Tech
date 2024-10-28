@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Drawer, Box, Button, Badge } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Drawer, Box, Button, Badge, Avatar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Link } from 'react-router-dom';
+import { useStore } from '@nanostores/react';
+import { authStore, logout } from '../stores/authStore';
 
 const Navbar = ({ toggleTheme, isDarkMode }) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const { isAuthenticated, user } = useStore(authStore)
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
         setDrawerOpen(open);
+    };
+
+    const handleLogout = () => {
+        logout()
     };
 
     return (
@@ -22,35 +29,32 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
                         <MenuIcon />
                     </IconButton>
 
-                    {/* Navigation links */}
-                    {/* Instructions:
-                        - Implement navigation links for authenticated and unauthenticated users.
-                        - If the user is authenticated, show links like "Dashboard", "Settings", and a "Logout" button.
-                        - If the user is not authenticated, show "Login" and "Register" links. 
-                        - Use the `Link` component from `react-router-dom`. */}
-                    <Box>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <IconButton>
                             <Badge color="error" variant="dot">
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
-
-                        {/* User avatar */}
-                        {/* Instructions:
-                            - Display the user's avatar if they are logged in.
-                            - Use an Avatar component and display the user's email as a tooltip or alt text. */}
                     </Box>
                 </Toolbar>
             </AppBar>
 
             <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-                <Box>
-                    {/* Drawer navigation links */}
-                    {/* Instructions:
-                        - Display navigation links inside the drawer.
-                        - Links should be based on the user's authentication status.
-                        - For example, show links like "Dashboard", "Transactions", "Settings" if authenticated.
-                        - Use the `Link` component from `react-router-dom`. */}
+                <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+                    {isAuthenticated ? (
+                        <Box sx={{display:'flex', flexDirection:'column', alignContent:'start'}}>
+                            <Button component={Link} to="/dashboard">Dashboard</Button>
+                            <Button component={Link} to="/transactions">Transactions</Button>
+                            <Button component={Link} to="/settings">Settings</Button>
+                            <Button onClick={handleLogout}>Logout</Button>
+                        </Box>
+                    ) : (
+                        <Box>
+                            <Button component={Link} to="/login">Login</Button>
+                            <Button component={Link} to="/register">Register</Button>
+                        </Box>
+                    )}
                 </Box>
             </Drawer>
         </>
