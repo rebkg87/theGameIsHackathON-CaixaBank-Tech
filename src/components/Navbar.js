@@ -43,7 +43,7 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
             <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
                 <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
                     {isAuthenticated ? (
-                        <Box>
+                        <Box sx={{display:'flex', flexDirection:'column', alignContent:'start'}}>
                             <Button component={Link} to="/dashboard">Dashboard</Button>
                             <Button component={Link} to="/transactions">Transactions</Button>
                             <Button component={Link} to="/settings">Settings</Button>
