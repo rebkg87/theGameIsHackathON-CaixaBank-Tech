@@ -15,6 +15,7 @@ function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
     const [showCredentials, setShowCredentials] = useState(false);
     const navigate = useNavigate();
 
@@ -31,9 +32,17 @@ function LoginPage() {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError("Invalid email format");
+            return;
+        }
+
         if (email === defaultCredentials.email && password === defaultCredentials.password) {
             login({ email })
-            navigate('/')
+            setSuccess(true)
+            setError('')
+            setTimeout(() => navigate('/'), 2000)
         } else {
             setError('Wrong Credentials. Try again')
         }
@@ -106,6 +115,12 @@ function LoginPage() {
 
 
             {error && <AlertBanner errorMessage={error}/>}
+
+            {success && (
+                <Alert severity="success" sx={{ mt: 2 }}>
+                    Login successful! Redirecting to dashboard...
+                </Alert>
+            )}
 
             {showCredentials && (
                 <Alert severity="info" sx={{ mt: 2 }}>
