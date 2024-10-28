@@ -55,8 +55,8 @@ function AnalysisGraph() {
     };
 
     return (
-        <div style={{ height: '400px' }}>
-            <Bar data={data} options={{ responsive: true }} />
+        <div style={{ width: '100%', height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <Bar data={data} options={{ responsive: true, maintainAspectRatio: false}} />
         </div>
     );
 }
