@@ -24,9 +24,15 @@ function RegisterPage() {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError("Invalid email format");
+            return;
+        }
+
         const existingUser = localStorage.getItem(email);
         if (existingUser) {
-            setError('The email address is already registered. Please sign in.');
+            setError('User already exists. Please sign in.');
             return;
         }
 
@@ -134,7 +140,7 @@ function RegisterPage() {
 
             {success && (
                 <Alert severity="success" sx={{ mt: 2 }}>
-                    Account created successfully! Redirecting to login...
+                    Account created successfully!
                 </Alert>
             )}
         </Box>
