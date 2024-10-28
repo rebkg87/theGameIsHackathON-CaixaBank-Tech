@@ -134,7 +134,7 @@ function RegisterPage() {
 
             {success && (
                 <Alert severity="success" sx={{ mt: 2 }}>
-                    Account created successfully! Redirecting to login...
+                    Account created successfully!
                 </Alert>
             )}
         </Box>
