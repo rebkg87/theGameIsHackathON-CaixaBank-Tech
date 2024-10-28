@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Alert } from '@mui/material';
-import { login } from '../stores/authStore'; 
+import { login } from '../stores/authStore';
 
 function RegisterPage() {
     const [email, setEmail] = useState('');
@@ -33,17 +33,15 @@ function RegisterPage() {
         localStorage.setItem(email, JSON.stringify({ password }));
 
         login({ email });
-
         setSuccess(true);
         setError('');
-
         setTimeout(() => {
             navigate('/');
         }, 2000);
     };
 
     return (
-        <Box sx={{ maxWidth: 400, mx: 'auto', mt: 8, p: 2, border: '1px solid #ddd', borderRadius: 2, p:8 }}>
+        <Box sx={{ maxWidth: 400, mx: 'auto', mt: 8, p: 2, border: '1px solid #ddd', borderRadius: 2, p: 8 }}>
             <Typography variant="h4" gutterBottom>
                 Register
             </Typography>
