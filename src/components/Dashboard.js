@@ -15,7 +15,7 @@ const Recommendations = React.lazy(() => import('./Recommendations'));
 const RecentTransactions = React.lazy(() => import('./RecentTransactions'));
 
 function Dashboard() {
-    const {expenses, income, totalExpense, totalIncome} = useTransactions()
+    const { expenses, income, totalExpense, totalIncome } = useTransactions()
     const userSettings = useStore(userSettingsStore)
 
     const headers = ['description', 'amount', 'type', 'category', 'date']
@@ -61,10 +61,10 @@ function Dashboard() {
                                 },
                             }
                         }}>
-                            <Typography variant="h6" gutterBottom>
+                            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#007EAE' }}>
                                 Total Income
                             </Typography>
-                            <Typography variant="h5" data-testid="total-income">
+                            <Typography variant="h5" data-testid="total-income" sx={{ color: '#43a047' }}>
                                 {totalIncome} €                            </Typography>
                         </Paper>
                     </Grid>
@@ -76,10 +76,10 @@ function Dashboard() {
                                 },
                             }
                         }}>
-                            <Typography variant="h6" gutterBottom>
+                            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#007EAE' }}>
                                 Total Expenses
                             </Typography>
-                            <Typography variant="h5" data-testid="total-expenses">
+                            <Typography variant="h5" data-testid="total-expenses" sx={{ color: 'red' }}>
                                 {totalExpense} €                            </Typography>
                         </Paper>
                     </Grid>
@@ -92,53 +92,53 @@ function Dashboard() {
                             }
                         }}
                         >
-                            <Typography variant="h6" gutterBottom>
+                            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color: '#007EAE' }}>
                                 Balance
                             </Typography>
-                            <Typography variant="h5" data-testid="balance" sx={{ color: balance < 0 ? 'red' : 'inherit' }} >
+                            <Typography variant="h5" data-testid="balance" sx={{ color: balance < 0 ? 'red' : 'inherit' || balance > 0 ? '#43a047' : 'inherit' }} >
                                 {balance} €
                             </Typography>
                         </Paper>
                     </Grid>
                 </Grid>
-                <Box sx={{ display: 'flex', flexDirection:'row', gap: 2, mt: 5, flexWrap:'wrap', alignContent:'center', justifyContent:'center' }}>
-                                {balance < 0 && (
-                                    <Alert variant='filled' severity="error" sx={{ mb: 2, paddingRight: 2}}>
-                                        Warning: Negative Balance
-                                    </Alert>
-                                )}
-                                {totalExpense > totalBudgetLimit && (
-                                    <BudgetAlert />
-                                )}
-                            </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, mt: 5, flexWrap: 'wrap', alignContent: 'center', justifyContent: 'center' }}>
+                    {balance < 0 && (
+                        <Alert variant='filled' severity="error" sx={{ mb: 2, paddingRight: 2 }}>
+                            Warning: Negative Balance
+                        </Alert>
+                    )}
+                    {totalExpense > totalBudgetLimit && (
+                        <BudgetAlert />
+                    )}
+                </Box>
                 <Grid container spacing={4} sx={{ mt: 4 }}>
                     <Grid item xs={12} md={6}>
                         <Suspense fallback={<div>Loading Statistics...</div>}>
-                            <Statistics/>
+                            <Statistics />
                         </Suspense>
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Suspense fallback={<div>Loading Recommendations...</div>}>
-                            <Recommendations/>
+                            <Recommendations />
                         </Suspense>
                     </Grid>
                 </Grid>
-                <Grid container spacing={4} sx={{ mt: 4, display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'center', alignContent:'center', gap:2 }}>
+                <Grid container spacing={4} sx={{ mt: 4, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignContent: 'center', gap: 10 }}>
                     <Grid item xs={12}>
                         <Suspense fallback={<div>Loading Chart...</div>}>
-                            <AnalysisGraph/>
+                            <AnalysisGraph />
                         </Suspense>
                     </Grid>
                     <Grid item xs={12}>
                         <Suspense fallback={<div>Loading Chart...</div>}>
-                            <BalanceOverTime/>
+                            <BalanceOverTime />
                         </Suspense>
                     </Grid>
                 </Grid>
                 <Grid container spacing={4} sx={{ mt: 4 }}>
                     <Grid item xs={12}>
                         <Suspense fallback={<div>Loading Recent Transactions...</div>}>
-                            <RecentTransactions/>
+                            <RecentTransactions />
                         </Suspense>
                     </Grid>
                 </Grid>

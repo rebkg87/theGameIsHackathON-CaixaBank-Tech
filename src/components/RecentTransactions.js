@@ -7,35 +7,62 @@ import {
     TableHead,
     TableRow,
     Paper,
+    Typography,
 } from '@mui/material';
+import useTransactions from '../hooks/useTransactions';
 
-function RecentTransactions({ transactions }) {
+function RecentTransactions() {
+    const { transactions } = useTransactions();
 
-    // Recent transactions
-    // Instructions:
-    // - Sort the transactions by date, showing the most recent first.
-    // - Extract only the last 5 transactions for display.
-    const recentTransactions = []; // Implement logic to get the last 5 transactions
+    const sortedTransactions = [...transactions].sort((a, b) => {
+        const [dayA, monthA, yearA] = a.date.split('/').map(Number);
+        const [dayB, monthB, yearB] = b.date.split('/').map(Number);
+        const dateA = new Date(yearA, monthA - 1, dayA);
+        const dateB = new Date(yearB, monthB - 1, dayB);
+        return dateB - dateA; 
+    });
+
+    const recentTransactions = sortedTransactions.slice(0, 5);
 
     return (
         <div>
-            <h3>Recent Transactions</h3>
+            <Typography variant="h4" gutterBottom color="primary" sx={{mb:4}}>
+            Recent Transactions
+            </Typography>
             <TableContainer component={Paper}>
-                <Table size="small">
+                <Table size="medium">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Description</TableCell>
-                            <TableCell>Amount (€)</TableCell>
-                            <TableCell>Type</TableCell>
-                            <TableCell>Category</TableCell>
-                            <TableCell>Date</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#007EAE', color: 'white' }}>Description</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#007EAE', color: 'white' }}>Amount (€)</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#007EAE', color: 'white' }}>Type</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#007EAE', color: 'white' }}>Category</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#007EAE', color: 'white' }}>Date</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {/* Instructions:
-                            - Map over the recentTransactions array and render each transaction in a table row.
-                            - For each row, display the transaction's description, amount, type (income/expense), category, and date.
-                            - Ensure that the amount is formatted to two decimal places. */}
+                    {recentTransactions.map((transaction) => {
+                            const [day, month, year] = transaction.date.split('/').map(Number);
+                            const transactionDate = new Date(year, month - 1, day);
+
+                            return (
+                                <TableRow key={transaction.id}>
+                                    <TableCell>{transaction.description}</TableCell>
+                                    <TableCell>
+                                        {transaction.amount.toFixed(2)}
+                                    </TableCell>
+                                    <TableCell>{transaction.type}</TableCell>
+                                    <TableCell>{transaction.category}</TableCell>
+                                    <TableCell>
+                                        {isNaN(transactionDate) ? (
+                                            "Invalid Date"
+                                        ) : (
+                                            transactionDate.toLocaleDateString()
+                                        )}
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
